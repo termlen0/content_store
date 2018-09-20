@@ -4,7 +4,7 @@
 
 - name: "Add private_key_file to ssh-agent (if necessary)"
   include_tasks: "includes/private_key_file.yaml"
-  when: config_store_private_key_file is defined
+  when: config_store_scm_private_key_file is defined
 
 - name: "Remove local repository (if necessary)"
   file:
@@ -19,8 +19,11 @@
     dest: "{{ config_store_working_dir }}"
     remote: "{{ config_store_remote_name }}"
     version: "{{ config_store_remote_branch }}"
+    key_file: "{{ config_store_scm_private_key_file }}"
   run_once: yes
   changed_when: False
+#  when: config_store_scm_private_key_file is defined
+
 
 - name: "Configure local git repository"
   git_config:
