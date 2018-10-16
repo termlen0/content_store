@@ -5,18 +5,19 @@
       file:
         path: "{{ config_store_secure_dir }}"
         state: directory
+        mode: 0700
 
     - name: "create file with key"
       copy:
         content: "{{ config_store_scm_private_key }}"
-        dest: "{{ config_store_secure_dir }}/.scm_private_key"
-        mode: 0600
+        dest: "{{ config_store_secure_dir }}/scm_private_key"
+        mode: 0400
 
     - name: "ssh-add file containing the key"
-      shell: "ssh-add {{ config_store_secure_dir }}/.scm_private_key"
+      shell: "eval `ssh-agent -s` ; ssh-add {{ config_store_secure_dir }}/scm_private_key"
 
-  always:
-    - name: "remove file with the key"
-      file:
-        path: "{{ config_store_secure_dir }}/.scm_private_key"
-        state: absent
+  # always:
+  #   - name: "remove file with the key"
+  #     file:
+  #       path: "{{ config_store_secure_dir }}/.scm_private_key"
+  #       state: absent
