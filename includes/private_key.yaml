@@ -10,12 +10,15 @@
     - name: "create file with key"
       copy:
         content: "{{ config_store_scm_private_key }}"
-        dest: "{{ config_store_secure_dir }}/scm_private_key"
+        dest: "{{ config_store_secure_dir }}/.scm_private_key"
         mode: 0400
 
     - name: "ssh-add file containing the key"
-      shell: "eval `ssh-agent -s` ; ssh-add {{ config_store_secure_dir }}/scm_private_key"
+      shell: "eval `ssh-agent -s` ; ssh-add {{ config_store_secure_dir }}/.scm_private_key"
 
+    - name: SET THE KEY FILE VAR
+      set_fact:
+        config_store_scm_private_key_file: "{{ config_store_secure_dir }}/.scm_private_key"
   # always:
   #   - name: "remove file with the key"
   #     file:

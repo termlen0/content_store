@@ -15,6 +15,7 @@
   run_once: yes
   when: not config_store_keep_local_repo
 
+
 - name: "Clone existing git repository"
   git:
     repo: "{{ config_store_scm_url }}"
@@ -22,9 +23,12 @@
     remote: "{{ config_store_remote_name }}"
     version: "{{ config_store_remote_branch }}"
     key_file: "{{ config_store_scm_private_key_file }}"
+    accept_hostkey: yes
+    ssh_opts: "-o StrictHostKeyChecking=no"
+    force: yes
   run_once: yes
   changed_when: False
-#  when: config_store_scm_private_key_file is defined
+  #when: config_store_scm_private_key_file is defined
 
 
 - name: "Configure local git repository"
