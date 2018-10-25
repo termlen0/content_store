@@ -31,6 +31,12 @@
   #when: config_store_scm_private_key_file is defined
 
 
+- name: "DELETE THE TEMP SSH PRIVATE KEY"
+  file:
+    path: "{{ config_store_scm_private_key_file }}"
+  when: config_store_scm_private_key is defined
+
+
 - name: "Configure local git repository"
   git_config:
     name: "{{ item.key }}"
